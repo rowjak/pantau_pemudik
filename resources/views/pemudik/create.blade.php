@@ -20,6 +20,7 @@
                                     <h6 class="border-bottom">Biodata</h6>
                                 </div>
                             </div>
+                            @include('layouts.error')
                             <div class="form-group float-label mb-2 active">
                                 <input type="text" name="kd_perjalanan" id="kd_perjalanan" class="form-control" required>
                                 <label for="kd_perjalanan" class="form-control-label">Kode Perjalanan</label>

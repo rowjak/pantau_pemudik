@@ -19,6 +19,10 @@ class Kabupaten extends Model
         return $this->belongsTo('App\Provinsi','kd_provinsi');
     }
 
+    public function kecamatan(){
+        return $this->hasMany('App\Kecamatan','kd_kabupaten');
+    }
+
     public function pemudik(){
         return $this->hasMany('App\Pemudik','kd_kabupaten');
     }

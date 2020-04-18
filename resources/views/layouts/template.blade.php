@@ -86,6 +86,7 @@
             <a href="{{route('profile.index')}}" class="list-group-item list-group-item-action {{ (request()->is('profile*')) ? 'active' : '' }}"><i class="material-icons">account_circle</i>Input Data</a>
             @else
             <a href="{{route('pemudik.index')}}" class="list-group-item list-group-item-action {{ (request()->is('pemudik*')) ? 'active' : '' }}"><i class="material-icons">account_circle</i>Data Pemudik</a>
+            <a href="{{route('transit.index')}}" class="list-group-item list-group-item-action {{ (request()->is('transit*')) ? 'active' : '' }}"><i class="material-icons">place</i>Tempat Transit</a>
             @endif
 
             <a href="{{route('about')}}" class="list-group-item list-group-item-action {{ (request()->is('about')) ? 'active' : '' }}"><i class="material-icons">info</i>Tentang Kami</a>
@@ -147,6 +148,12 @@
                             <a href="{{route('pemudik.index')}}" class="btn btn-link-default {{ (request()->is('pemudik*')) ? 'active' : '' }}">
                                 <span class="icon-text"><i class="material-icons">account_circle</i></span>
                                 <span class="text-name">Data Pemudik</span>
+                            </a>
+                        </div>
+                        <div class="col-auto">
+                            <a href="{{route('transit.index')}}" class="btn btn-link-default {{ (request()->is('transit*')) ? 'active' : '' }}">
+                                <span class="icon-text"><i class="material-icons">place</i></span>
+                                <span class="text-name">Tempat Transit</span>
                             </a>
                         </div>
                         @endif

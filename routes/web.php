@@ -24,11 +24,12 @@ Route::resource('', 'DashboardController')->only(['index']);
 Route::resource('dashboard', 'DashboardController')->only(['index']);
 Route::resource('berita', 'BeritaController')->only(['index']);
 Route::resource('pemudik', 'PemudikController');
+Route::resource('transit', 'TransitController');
 Route::get('about', 'ProfileController@about')->name('about');
 Route::get('screening/{kd_pemudik}', 'PemudikController@screening')->name('screening');
 Route::get('laporkan', 'PemudikController@laporkan')->name('laporkan');
 Route::get('api/pemudik', 'PemudikController@getPemudik')->name('apiPemudik');
-Route::get('pemudik/daftar', 'PemudikController@daftar')->name('pemudik.daftar');
+Route::get('daftarpemudik', 'PemudikController@daftar')->name('pemudik.daftar');
 Route::match(['put', 'patch'],'storeScreening/{kd_pemudik}', 'PemudikController@storeScreening')->name('storeScreening');
 
 Route::resource('profile', 'ProfileController')->only(['index'])->middleware('auth:pemudik');

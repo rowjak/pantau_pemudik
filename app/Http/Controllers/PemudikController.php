@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Kecamatan;
 use App\Transportasi;
 use App\Transit;
 use App\Pemudik;
+use App\Desa;
+use App\Kecamatan;
+use App\Kabupaten;
+use App\Provinsi;
 use Auth;
 use DataTables;
 
@@ -80,6 +83,13 @@ class PemudikController extends Controller
         $transportasi = Transportasi::orderBy('nama_kendaraan','asc')->get();
         $transit = Transit::orderBy('tempat_transit','asc')->get();
         return view('pemudik.create',compact('kecamatan','transportasi','transit'));
+    }
+
+    public function xpemudik(){
+        $data = Kabupaten::where('kd_kabupaten','like','3325%')->withCount('kecamatan')->get();
+        return response()->json(
+            $data,200
+        );
     }
 
     public function daftar(){
