@@ -10,6 +10,7 @@ use App\Desa;
 use App\Kecamatan;
 use App\Kabupaten;
 use App\Provinsi;
+use App\Perjalanan;
 use Auth;
 use DataTables;
 
@@ -26,7 +27,11 @@ class PemudikController extends Controller
     }
 
     public function getPemudik(){
-        $data = Pemudik::where('kd_desa',Auth::guard('admin')->user()->kd_desa)->with('desa','kecamatan','perjalanan','kecamatan.kabupaten','kecamatan.kabupaten.provinsi')->get();
+        if (Auth::guard('admin')->user()->level == 'admin') {
+            $data = Pemudik::with('desa','kecamatan','perjalanan','kecamatan.kabupaten','kecamatan.kabupaten.provinsi')->get();
+        }else{
+            $data = Pemudik::where('kd_desa',Auth::guard('admin')->user()->kd_desa)->with('desa','kecamatan','perjalanan','kecamatan.kabupaten','kecamatan.kabupaten.provinsi')->get();
+        }
         return DataTables::of($data)
                 ->addColumn('alamat_asal',function($data){
                     if ($data->perjalanan != "") {
@@ -56,6 +61,8 @@ class PemudikController extends Controller
             }else{
                 abort('404');
             }
+        }else if(Auth::guard('admin')->check()){
+            return view('pemudik.screening',compact('pemudik'));
         }
         abort('404');
     }
@@ -63,6 +70,45 @@ class PemudikController extends Controller
     public function storeScreening(Request $request, $kd_pemudik){
         echo json_encode($request->all());
         // echo json_encode($kd_pemudik);
+    }
+
+    public function storePerjalanan(Request $request){
+        $data = $request->all();
+        $data['tgl_sampai'] = date('Y-m-d',strtotime($data['tgl_sampai']));
+
+        $perjalanan = array(
+            'provinsi_asal' => $data['provinsi_asal'],
+            'kabupaten_asal' => $data['kabupaten_asal'],
+            'kecamatan_asal' => $data['kecamatan_asal'],
+            'desa_asal' => $data['desa_asal'],
+            'provinsi_tujuan' => $data['provinsi_tujuan'],
+            'kabupaten_tujuan' => $data['kabupaten_tujuan'],
+            'kecamatan_tujuan' => $data['kecamatan_tujuan'],
+            'desa_tujuan' => $data['desa_tujuan'],
+            'kd_transportasi' => $data['transportasi'],
+            'tgl_sampai' => $data['tgl_sampai']
+        );
+
+        $kd_perjalanan = Perjalanan::create($perjalanan)->kd_perjalanan;
+
+        $pemudik = array(
+            'kd_perjalanan' => $kd_perjalanan,
+            'no_hp' => $data['no_hp'],
+            'nik' => $data['nik'],
+            'nama' => $data['nama'],
+            'jenis_kelamin' => $data['jenis_kelamin'],
+            'usia' => $data['usia'],
+            'hub_kekerabatan' => $data['hub_kekerabatan'],
+            'pekerjaan' => $data['pekerjaan'],
+            'alamat' => $data['alamat'],
+            'kd_kecamatan' => $data['kecamatan_tujuan'],
+            'kd_desa' => $data['desa_tujuan'],
+            'password' => \Hash::make('123')
+        );
+
+        $kd_pemudik = Pemudik::create($pemudik)->kd_pemudik;
+
+        return redirect()->route('screening',[$kd_pemudik]);
     }
 
     public function laporkan(){
@@ -77,19 +123,28 @@ class PemudikController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->ajax()) {
+            $term = trim($request->q);
+            if (empty($term)) {
+                return \Response::json([]);
+            }
+            $data = Pemudik::with('desa','kecamatan','perjalanan','kecamatan.kabupaten','kecamatan.kabupaten.provinsi')->whereNotNull('no_hp')->where('nama','like','%'.$term.'%')->get();
+
+            $formatted_select = [];
+
+            foreach ($data as $row) {
+                $formatted_select[] = ['id' => $row->kd_perjalanan, 'text' => \ucwords(\strtolower($row->nama.' - '.$row->desa->nama_desa.' - '.$row->kecamatan->nama_kecamatan.' - '.$row->kecamatan->kabupaten->nama_kabupaten))];
+            }
+
+            return \Response::json($formatted_select);
+
+        }
         $kecamatan = Kecamatan::where('kd_kabupaten','like','3325%')->orderBy('nama_kecamatan','asc')->get();
         $transportasi = Transportasi::orderBy('nama_kendaraan','asc')->get();
         $transit = Transit::orderBy('tempat_transit','asc')->get();
         return view('pemudik.create',compact('kecamatan','transportasi','transit'));
-    }
-
-    public function xpemudik(){
-        $data = Kabupaten::where('kd_kabupaten','like','3325%')->withCount('kecamatan')->get();
-        return response()->json(
-            $data,200
-        );
     }
 
     public function daftar(){
@@ -106,8 +161,8 @@ class PemudikController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        Pemudik::create($data);
-        return redirect('profile');
+        $kd_pemudik = Pemudik::create($data)->kd_pemudik;
+        return redirect()->route('screening',[$kd_pemudik]);
     }
 
     /**

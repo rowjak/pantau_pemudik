@@ -7,6 +7,9 @@
 
     @yield('meta')
 
+    <link rel='icon' href='{{asset('theme/images/logo.png')}}' type='image/x-icon' />
+
+
     <!-- Material design icons CSS -->
     <link rel="stylesheet" href="{{asset('')}}theme/vendor/materializeicon/material-icons.css">
 
@@ -100,6 +103,27 @@
             $('.select2').select2({
                 theme: 'bootstrap4'
             })
+
+            $('#select_perjalanan').select2({
+                theme: 'bootstrap4',
+                placeholder: "Cari Rombongan...",
+                minimumInputLength: 2,
+                ajax: {
+                    url: '{{route('pemudik.create')}}',
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            q: $.trim(params.term)
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                }
+            });
 
             $('.datepicker').datepicker({
                 format: 'dd-mm-yyyy',

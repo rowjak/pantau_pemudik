@@ -14,13 +14,13 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         if (request()->is('/')) {
             if (Auth::guard('pemudik')->check()) {
                 return redirect()->intended('profile');
             }
-        }else{
+        }else if($request->ajax()){
 
         }
         return view('dashboard.index');

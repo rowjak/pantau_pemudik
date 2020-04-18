@@ -14,7 +14,16 @@ class Provinsi extends Model
         'nama_provinsi'
     ];
 
-    public function pemudik(){
-        return $this->hasMany('App\Pemudik','kd_provinsi');
-    }
+    // public function pemudik()
+    // {
+    //     return $this->hasManyThrough(
+    //         'App\Kecamatan',
+    //         'App\Pemudik',
+    //         ''
+    //     );
+    // }
+
+    // public function pemudik(){
+    //     return $this->hasMany('App\Pemudik','kd_provinsi');
+    // }
 }

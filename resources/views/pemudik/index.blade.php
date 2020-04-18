@@ -20,9 +20,14 @@
                     </figure>
                 </div>
                 <div class="col pl-0">
+                    @if(Auth::guard('admin')->user()->level == 'admin')
+                    <p class="mt-3 mb-2">Administrator</p>
+                    <h5 class="font-weight-normal mb-0">Pantau Pemudik Kabupaten Batang</h5>
+                    @else
                     <p class="mt-3 mb-2">DESA</p>
                     <h5 class="font-weight-normal mb-0">DESA {{Auth::guard('admin')->user()->desa->nama_desa}}</h5>
                     <p class="my-0 text-secondary text-mute">KECAMATAN {{Auth::guard('admin')->user()->desa->kecamatan->nama_kecamatan}}</p>
+                    @endif
                 </div>
             </div>
         </div>

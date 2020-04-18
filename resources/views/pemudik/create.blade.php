@@ -21,9 +21,11 @@
                                 </div>
                             </div>
                             @include('layouts.error')
-                            <div class="form-group float-label mb-2 active">
-                                <input type="text" name="kd_perjalanan" id="kd_perjalanan" class="form-control" required>
-                                <label for="kd_perjalanan" class="form-control-label">Kode Perjalanan</label>
+                            <div class="form-group mb-2">
+                                <label for="select_perjalanan" class="form-control-label">Rombongan Mudik</label>
+                                <select class="form-control select2" id="select_perjalanan" name="kd_perjalanan">
+
+                                </select>
                             </div>
                             <div class="form-group float-label mb-2">
                                 <input type="text" name="nik" id="nik" class="form-control" required >

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no">
+    <link rel='icon' href='{{asset('theme/images/logo.png')}}' type='image/x-icon' />
 
     @yield('meta')
 
@@ -71,8 +72,13 @@
                     <p class="my-0">{{Auth::guard('pemudik')->user()->nik}}</p>
                     <p class="text-mute my-0 small">{{Auth::guard('pemudik')->user()->nama}}</p>
                 @elseif(Auth::guard('admin')->check())
+                    @if(Auth::guard('admin')->user()->level == 'admin')
+                    <p class="my-0">Administrator</p>
+                    <p class="text-mute my-0 small">Pantau Pemudik</p>
+                    @else
                     <p class="my-0">DESA {{Auth::guard('admin')->user()->desa->nama_desa}}</p>
                     <p class="text-mute my-0 small">KEC. {{Auth::guard('admin')->user()->desa->kecamatan->nama_kecamatan}}</p>
+                    @endif
                 @endif
             </div>
         </div>
@@ -87,7 +93,11 @@
             @else
             <a href="{{route('pemudik.index')}}" class="list-group-item list-group-item-action {{ (request()->is('pemudik*')) ? 'active' : '' }}"><i class="material-icons">account_circle</i>Data Pemudik</a>
             <a href="{{route('transit.index')}}" class="list-group-item list-group-item-action {{ (request()->is('transit*')) ? 'active' : '' }}"><i class="material-icons">place</i>Tempat Transit</a>
+                @if(Auth::guard('admin')->user()->level == 'admin')
+                <a href="{{route('user.index')}}" class="list-group-item list-group-item-action {{ (request()->is('user*')) ? 'active' : '' }}"><i class="material-icons">people</i>Manajemen User</a>
+                @endif
             @endif
+
 
             <a href="{{route('about')}}" class="list-group-item list-group-item-action {{ (request()->is('about')) ? 'active' : '' }}"><i class="material-icons">info</i>Tentang Kami</a>
             @if(Auth::guard('pemudik')->check() | Auth::guard('admin')->check())
@@ -156,6 +166,14 @@
                                 <span class="text-name">Tempat Transit</span>
                             </a>
                         </div>
+                        @if(Auth::guard('admin')->user()->level == 'admin')
+                        <div class="col-auto">
+                            <a href="{{route('user.index')}}" class="btn btn-link-default {{ (request()->is('user*')) ? 'active' : '' }}">
+                                <span class="icon-text"><i class="material-icons">people</i></span>
+                                <span class="text-name">User</span>
+                            </a>
+                        </div>
+                        @endif
                         @endif
                         <div class="col-auto">
                             <a href="{{route('about')}}" class="btn btn-link-default {{ (request()->is('about')) ? 'active' : '' }}">
@@ -268,6 +286,39 @@
 
             $('#tableProfile').DataTable({
                 order: []
+            })
+
+            $('#tableUser').DataTable({
+                processing: true,
+                pageLength: 7,
+                lengthMenu: [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+                language: {
+                    processing: 'Sedang Memuat Data...'
+                },
+                order: [],
+                serverSide: true,
+                ajax: {
+                    url: "{{route('user.index')}}"
+                },
+                columns: [
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                    {
+                        data: 'username',
+                        name: 'username'
+                    },
+                    {
+                        data: 'kecamatan',
+                        name: 'kecamatan'
+                    },
+                    {
+                        data: 'desa',
+                        name: 'desa'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action'
+                    },
+                ]
             })
 
             $('#tablePemudik').DataTable({

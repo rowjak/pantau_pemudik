@@ -21,7 +21,7 @@ class Admin extends Authenticatable
     protected $primaryKey = "kd_admin";
 
     protected $fillable = [
-        'username', 'kd_desa', 'password',
+        'username', 'kd_desa', 'password','level'
     ];
 
     public function desa(){

@@ -12,8 +12,8 @@
             <div class="col-12 col-md-6 col-lg-5 mx-auto login-row">
                 <div class="row h-100">
                     <div class="col-12 align-self-center">
-                        <h1 class="font-weight-light mb-5 text-center"><small class="font-weight-light">Selamat Datang</small>,<br><span class="text-mute">Silahkan Isi Biodata Anda</span></h1>
-                        <form class="form-admin" action="{{route('storeDaftar')}}" method="post">
+                        <h1 class="font-weight-light mb-5 text-center"><small class="font-weight-light">Selamat Datang</small>,<br><span class="text-mute">Silahkan Isi Biodata Pemudik</span></h1>
+                        <form class="form-admin" action="{{route('pemudik.storeperjalanan')}}" method="post">
                             @csrf
                             <div class="row">
                                 <div class="col-12">
@@ -94,8 +94,8 @@
                                     <h6 class="border-bottom">Biodata</h6>
                                 </div>
                             </div>
-                            <div class="form-group float-label active mb-2">
-                                <input type="text" name="no_hp" id="no_hp" class="form-control" required value="{{Session::get('no_hp')}}">
+                            <div class="form-group float-label mb-2">
+                                <input type="text" name="no_hp" id="no_hp" class="form-control" required>
                                 <label for="no_hp" class="form-control-label">Nomor HP</label>
                             </div>
                             <div class="form-group float-label mb-2">
