@@ -27,4 +27,8 @@ class Kecamatan extends Model
         return $this->hasMany('App\Pemudik','kd_kecamatan');
     }
 
+    public function asalpemudik(){
+        return $this->hasMany('App\Pemudik','kec_asal');
+    }
+
 }

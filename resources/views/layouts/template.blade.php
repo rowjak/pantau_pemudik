@@ -274,6 +274,8 @@
     <!-- template custom js -->
     <script src="{{asset('')}}theme/js/main.js"></script>
 
+    @yield('script')
+
     <script>
         $(function(){
             $('.select2').select2({
@@ -287,6 +289,8 @@
             $('#tableProfile').DataTable({
                 order: []
             })
+
+
 
             $('#tableUser').DataTable({
                 processing: true,

@@ -122,7 +122,11 @@ class LoginController extends Controller
             'alamat' => $data['alamat'],
             'kd_kecamatan' => $data['kecamatan_tujuan'],
             'kd_desa' => $data['desa_tujuan'],
-            'password' => \Hash::make('123')
+            'password' => \Hash::make('123'),
+            'prov_asal' => $data['prov_asal'],
+            'kab_asal' => $data['kab_asal'],
+            'kec_asal' => $data['kec_asal'],
+            'des_asal' => $data['des_asal'],
         );
 
         Pemudik::create($pemudik);

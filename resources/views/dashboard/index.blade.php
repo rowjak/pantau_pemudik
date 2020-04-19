@@ -144,14 +144,19 @@
         </div> --}}
         <div class="container my-5">
             <div class="row">
-                <div class="col-12 text-uppercase">
-                    <hr>
-                    <h5 class="mb-0 text-center">Statistik Pemudik</h5>
-                    <h6 class="mb-0 text-center">Jumlah Pemudik</h6>
-                </div>
-                <div class="col-12 mt-2">
-                    <div id="chartJumlahPemudik"></div>
-                </div>
+
+                @if (request()->is('/') | request()->is('dashboard'))
+                    @include('dashboard.provinsi')
+                @endif
+                @if (request()->is('dashboard/kabupaten*'))
+                    @include('dashboard.kabupaten')
+                @endif
+                @if (request()->is('dashboard/kecamatan*'))
+                    @include('dashboard.kecamatan')
+                @endif
+                @if (request()->is('dashboard/desa*'))
+                    @include('dashboard.desa')
+                @endif
             </div>
 
         </div>
@@ -159,21 +164,11 @@
             <div class="row">
                 <div class="col-12 text-uppercase">
                     <hr>
-                    <h5 class="mb-0 text-center">Statistik Asal Pemudik (Data Berdasarkan Provinsi)</h5>
+                    <h5 class="mb-0 text-center">Statistik Pemudik</h5>
+                    <h6 class="mb-0 text-center">Jumlah Pemudik</h6>
                 </div>
                 <div class="col-12 mt-2">
-                    <table class="table nowrap table-bordered table-striped dt-responsive" style="width: 100%">
-                        <thead>
-                            <tr class="table-warning">
-                                <th>Nama Provinsi</th>
-                                <th>Jumlah</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
+                    <div id="chartJumlahPemudik"></div>
                 </div>
             </div>
 
@@ -224,4 +219,163 @@
 
         </div>
 
+@endsection
+
+@section('script')
+
+    @if (request()->is('/') | request()->is('dashboard'))
+        <script>
+            $(function(){
+                $('#statprov').DataTable({
+                    processing: true,
+                    pageLength: 7,
+                    lengthMenu: [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+                    language: {
+                        processing: 'Sedang Memuat Data...'
+                    },
+                    order: ['1','desc'],
+                    serverSide: true,
+                    ajax: {
+                        url: "{{route('dashboard.index')}}"
+                    },
+                    columns: [
+                        {
+                            data: 'nama_provinsi',
+                            name: 'nama_provinsi'
+                        },
+                        {
+                            data: 'pemudik_count',
+                            name: 'pemudik_count'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        }
+                    ]
+                })
+            })
+        </script>
+    @endif
+
+    @if (request()->is('dashboard/kabupaten*'))
+        <script>
+            $(function(){
+                $('#statkab').DataTable({
+                    processing: true,
+                    pageLength: 7,
+                    lengthMenu: [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+                    language: {
+                        processing: 'Sedang Memuat Data...'
+                    },
+                    order: ['2','desc'],
+                    serverSide: true,
+                    ajax: {
+                        url: "{{route('dashboard.kabupaten',[$nama_provinsi->kd_provinsi])}}"
+                    },
+                    columns: [
+                        {
+                            data: 'nama_kabupaten',
+                            name: 'nama_kabupaten'
+                        },
+                        {
+                            data: 'nama_provinsi',
+                            name: 'nama_provinsi'
+                        },
+                        {
+                            data: 'pemudik_count',
+                            name: 'pemudik_count'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        }
+                    ]
+                })
+            })
+        </script>
+    @endif
+
+    @if (request()->is('dashboard/kecamatan*'))
+        <script>
+            $(function(){
+                $('#statkec').DataTable({
+                    processing: true,
+                    pageLength: 7,
+                    lengthMenu: [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+                    language: {
+                        processing: 'Sedang Memuat Data...'
+                    },
+                    order: ['3','desc'],
+                    serverSide: true,
+                    ajax: {
+                        url: "{{route('dashboard.kecamatan',[$nama_kabupaten->kd_kabupaten])}}"
+                    },
+                    columns: [
+                        {
+                            data: 'nama_kecamatan',
+                            name: 'nama_kecamatan'
+                        },
+                        {
+                            data: 'nama_kabupaten',
+                            name: 'nama_kabupaten'
+                        },
+                        {
+                            data: 'nama_provinsi',
+                            name: 'nama_provinsi'
+                        },
+                        {
+                            data: 'asalpemudik_count',
+                            name: 'asalpemudik_count'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action'
+                        }
+                    ]
+                })
+            })
+        </script>
+    @endif
+
+    @if (request()->is('dashboard/desa*'))
+        <script>
+            $(function(){
+                $('#statdes').DataTable({
+                    processing: true,
+                    pageLength: 7,
+                    lengthMenu: [[7, 10, 25, 50, -1], [7, 10, 25, 50, "All"]],
+                    language: {
+                        processing: 'Sedang Memuat Data...'
+                    },
+                    order: ['4','desc'],
+                    serverSide: true,
+                    ajax: {
+                        url: "{{route('dashboard.desa',[$nama_kecamatan->kd_kecamatan])}}"
+                    },
+                    columns: [
+                        {
+                            data: 'nama_desa',
+                            name: 'nama_desa'
+                        },
+                        {
+                            data: 'nama_kecamatan',
+                            name: 'nama_kecamatan'
+                        },
+                        {
+                            data: 'nama_kabupaten',
+                            name: 'nama_kabupaten'
+                        },
+                        {
+                            data: 'nama_provinsi',
+                            name: 'nama_provinsi'
+                        },
+                        {
+                            data: 'asalpemudik_count',
+                            name: 'asalpemudik_count'
+                        }
+                    ]
+                })
+            })
+        </script>
+    @endif
 @endsection

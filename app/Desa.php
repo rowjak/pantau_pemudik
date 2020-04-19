@@ -22,4 +22,8 @@ class Desa extends Model
     public function pemudik(){
         return $this->hasMany('App\Pemudik','kd_desa');
     }
+
+    public function asalpemudik(){
+        return $this->hasMany('App\Pemudik','des_asal');
+    }
 }

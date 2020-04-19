@@ -23,7 +23,16 @@ class Provinsi extends Model
     //     );
     // }
 
-    // public function pemudik(){
-    //     return $this->hasMany('App\Pemudik','kd_provinsi');
-    // }
+    public function pemudik(){
+        return $this->hasMany('App\Pemudik','prov_asal');
+    }
+    public function byKab(){
+        return $this->hasMany('App\Pemudik','kab_asal');
+    }
+    public function byKec(){
+        return $this->hasMany('App\Pemudik','kec_asal');
+    }
+    public function byDes(){
+        return $this->hasMany('App\Pemudik','des_asal');
+    }
 }

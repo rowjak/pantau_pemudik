@@ -26,3 +26,5 @@ Route::get('getKecamatan/{kd_kabupaten}','Api\ApiPemudikController@getKecamatan'
 Route::get('getKabupaten/{kd_provinsi}','Api\ApiPemudikController@getKabupaten');
 Route::get('getPemudik','Api\ApiPemudikController@getPemudik');
 
+Route::get('jumlahPemudikProvinsi','Api\ApiPemudikController@jumlahPemudikProvinsi');
+

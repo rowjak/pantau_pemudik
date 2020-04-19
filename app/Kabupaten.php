@@ -24,6 +24,6 @@ class Kabupaten extends Model
     }
 
     public function pemudik(){
-        return $this->hasMany('App\Pemudik','kd_kabupaten');
+        return $this->hasMany('App\Pemudik','kab_asal');
     }
 }

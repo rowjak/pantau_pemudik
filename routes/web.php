@@ -32,6 +32,10 @@ Route::get('api/pemudik', 'PemudikController@getPemudik')->name('apiPemudik');
 Route::get('daftarpemudik', 'PemudikController@daftar')->name('pemudik.daftar');
 Route::post('storeperjalanan', 'PemudikController@storePerjalanan')->name('pemudik.storeperjalanan');
 Route::match(['put', 'patch'],'storeScreening/{kd_pemudik}', 'PemudikController@storeScreening')->name('storeScreening');
+Route::get('dashboard/kabupaten/{kd_provinsi}', 'DashboardController@kabupaten')->name('dashboard.kabupaten');
+Route::get('dashboard/kecamatan/{kd_kabupaten}', 'DashboardController@kecamatan')->name('dashboard.kecamatan');
+Route::get('dashboard/desa/{kd_kecamatan}', 'DashboardController@desa')->name('dashboard.desa');
+
 
 Route::resource('profile', 'ProfileController')->only(['index'])->middleware('auth:pemudik');
 

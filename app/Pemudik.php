@@ -20,7 +20,7 @@ class Pemudik extends Authenticatable
     protected $primaryKey = "kd_pemudik";
 
     protected $fillable = [
-        'no_hp', 'nik', 'nama','jenis_kelamin','usia','hub_kekerabatan','pekerjaan','alamat','kd_desa','password','kd_kecamatan', 'kd_perjalanan'
+        'no_hp', 'nik', 'nama','jenis_kelamin','usia','hub_kekerabatan','pekerjaan','alamat','kd_desa','password','kd_kecamatan', 'kd_perjalanan','prov_asal','kab_asal','kec_asal','des_asal','kd_transit'
     ];
 
     public function desa(){

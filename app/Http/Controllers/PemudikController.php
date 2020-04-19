@@ -103,7 +103,11 @@ class PemudikController extends Controller
             'alamat' => $data['alamat'],
             'kd_kecamatan' => $data['kecamatan_tujuan'],
             'kd_desa' => $data['desa_tujuan'],
-            'password' => \Hash::make('123')
+            'password' => \Hash::make('123'),
+            'prov_asal' => $data['prov_asal'],
+            'kab_asal' => $data['kab_asal'],
+            'kec_asal' => $data['kec_asal'],
+            'des_asal' => $data['des_asal']
         );
 
         $kd_pemudik = Pemudik::create($pemudik)->kd_pemudik;
@@ -161,6 +165,11 @@ class PemudikController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        $perjalanan = Perjalanan::findOrFail($data['kd_perjalanan']);
+        $data['prov_asal'] = $perjalanan['provinsi_asal'];
+        $data['kab_asal'] = $perjalanan['kabupaten_asal'];
+        $data['kec_asal'] = $perjalanan['kecamatan_asal'];
+        $data['des_asal'] = $perjalanan['desa_asal'];
         $kd_pemudik = Pemudik::create($data)->kd_pemudik;
         return redirect()->route('screening',[$kd_pemudik]);
     }

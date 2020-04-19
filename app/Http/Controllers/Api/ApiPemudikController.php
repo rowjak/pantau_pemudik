@@ -17,6 +17,16 @@ use Auth;
 class ApiPemudikController extends Controller
 {
 
+    public function jumlahPemudikProvinsi(){
+        $data = Provinsi::withCount('pemudik')->get();
+        return DataTables::of($data)
+            ->addColumn('action',function($data){
+                $button = '<a href="'.route('dashboard.kabupaten',[$data->kd_provinsi]).'" class="btn btn-sm btn-info"><i class="material-icons">edit</i></a>';
+                return $button;
+            })
+            ->make(true);
+    }
+
     public function pemudikKecamatan(){
         $data = Kecamatan::select('*')->where('kd_kabupaten','3325')->withCount(['pemudik'])
                 ->get();
